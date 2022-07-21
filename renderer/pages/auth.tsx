@@ -10,7 +10,10 @@ export default function Auth() {
     setLoading(true);
     Firebase.signIn()
       .then(() => setLoading(false))
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }
 
   return (
