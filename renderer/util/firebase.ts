@@ -30,8 +30,6 @@ interface Listeners {
   "AUTH:CHANGE": (user: User) => void;
 }
 
-type Key = keyof Listeners;
-
 export default class Firebase {
   static firebase: FirebaseApp;
   static db: Firestore;
