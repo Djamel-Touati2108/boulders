@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    @apply focus:caret-brand focus:border-brand focus:ring-brand rounded-md border-gray-300 text-black shadow-sm;
+  }
+
+  body {
+    @apply overflow-hidden;
+  }
+
+  [type="checkbox"],
+  [type="radio"] {
+    @apply text-brand focus:ring-brand rounded border-gray-300;
+  }
+
+  [type="submit"] {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply btn bg-gradient text-white;
+  }
+
+  .btn-warn {
+    @apply btn bg-yellow-500 hover:bg-yellow-400 text-white;
+  }
+
+  .btn-gray {
+    @apply btn bg-white/10 text-white hover:bg-[rgba(255,255,255,0.15)];
+  }
+
+  .btn-secondary {
+    @apply btn bg-brand/20 text-brand hover:shadow-sm;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm focus:border-gray-400;
+  }
+
+  .btn-disabled {
+    @apply btn cursor-not-allowed bg-black/10 text-gray-500;
+  }
+
+  .btn {
+    @apply flex cursor-pointer select-none flex-row items-center justify-center space-x-2 rounded-md px-7 py-2.5 transition-all font-semibold;
+  }
+
+  .btn-link {
+    @apply btn px-3 py-1 text-lg text-white/60 hover:bg-white/5 hover:text-white/80;
+  }
+
+  .btn-icon {
+    @apply h-10 w-10 cursor-pointer rounded-md border-none p-2 text-white/40 outline-none transition-all hover:bg-white/5 hover:text-white/60;
+  }
+
+  .btn-icon svg {
+    @apply select-none;
+  }
+
+  .btn-text {
+    @apply flex items-center h-12 px-4 flex justify-center items-center transition-all;
+  }
+
+  .btn-text:hover > p {
+    @apply !text-lg;
+  }
+
+  .btn-text p {
+    @apply text-gradient text-base;
+  }
+
+  .btn-icon-gray {
+    @apply btn-icon h-12 w-12 bg-white/5 p-3 focus:bg-white/10;
+  }
+
+  .bg-gradient {
+    background: linear-gradient(90.29deg, #6337c1 2.47%, #ba49ef 91.98%);
+  }
+
+  .text-gradient {
+    font-size: 72px;
+    background: linear-gradient(90.29deg, #6337c1 2.47%, #ba49ef 91.98%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-brand-opacity {
+    background: rgba(99, 55, 193, 0.4);
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
