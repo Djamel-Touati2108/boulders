@@ -83,11 +83,11 @@
   }
 
   .btn-text:hover > p {
-    @apply !text-lg;
+    @apply !text-[1.1rem];
   }
 
   .btn-text p {
-    @apply text-gradient text-base;
+    @apply text-gradient text-base transition-all;
   }
 
   .btn-icon-gray {
@@ -108,6 +108,10 @@
   .bg-brand-opacity {
     background: rgba(99, 55, 193, 0.4);
   }
+
+  .layout {
+    @apply relative w-screen h-screen flex flex-col justify-between items-center p-8 pb-16;
+  }
 }
 
 input::-webkit-outer-spin-button,
@@ -119,4 +123,27 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+::-webkit-scrollbar {
+  width: 17px;
+  height: 17px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  border: 6px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  border: 4px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
 }

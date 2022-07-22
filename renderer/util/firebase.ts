@@ -8,11 +8,22 @@ import {
   User,
 } from "firebase/auth";
 import {
-  getFirestore,
+  addDoc,
   collection,
-  getDocs,
+  deleteDoc,
+  doc,
+  endAt,
   Firestore,
-} from "firebase/firestore/lite";
+  getDoc,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { ITask, isEmpty } from "./task";
 
 const config = {
   apiKey: "AIzaSyD8BJoCIxxUM2T7vmwn2ZAkz1I5CIJJj_A",
@@ -49,6 +60,14 @@ export default class Firebase {
     });
   }
 
+  static get isAuthenticated() {
+    return Boolean(this.auth?.currentUser);
+  }
+
+  static get user(): User {
+    return this.auth.currentUser;
+  }
+
   static on(listener: keyof Listeners, callback: Listeners[typeof listener]) {
     if (!this.listeners[listener]) this.listeners[listener] = [callback];
     else this.listeners[listener].push(callback);
@@ -80,7 +99,6 @@ export default class Firebase {
 
       signInWithCredential(this.auth, credential)
         .then((result) => {
-          console.log(result);
           res(result);
         })
         .catch(rej);
@@ -89,7 +107,32 @@ export default class Firebase {
 
   static signInAnonymously() {
     return new Promise((res, rej) => {
-      signInAnonymously(this.auth).then(res).catch(rej);
+      signInAnonymously(this.auth)
+        .then(async (result) => {
+          const users = collection(this.db, "users");
+          const user = doc(users, result.user.uid);
+
+          getDoc(user).then(async (doc) => {
+            if (!doc.exists()) await setDoc(user, {});
+            res(result);
+          });
+        })
+        .catch(rej);
+    });
+  }
+
+  static async update(task: ITask) {
+    const taskQuery = doc(this.db, "users", this.user.uid, "tasks", task.id);
+    delete task.id;
+    if (isEmpty(task)) await deleteDoc(taskQuery);
+    else await setDoc(taskQuery, task);
+  }
+
+  static async fetch() {
+    return new Promise<QueryDocumentSnapshot[]>(async (res) => {
+      const tasksQuery = collection(this.db, "users", this.user.uid, "tasks");
+      const taskData = await getDocs(tasksQuery);
+      res(taskData.docs);
     });
   }
 }

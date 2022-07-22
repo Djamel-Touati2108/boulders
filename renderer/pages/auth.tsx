@@ -1,16 +1,28 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import Loader from "../components/Loader";
+import Loader, { PageLoader } from "../components/Loader";
 import Firebase from "../util/firebase";
 import { ipcRenderer } from "electron";
 import Alert from "../components/Alert";
+import useAuth from "../hooks/useAuth";
+import { useRouter } from "next/router";
 
 export default function Auth() {
+  const router = useRouter();
+  const { authLoading, authenticated } = useAuth();
+
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (authLoading) return;
+    if (!authenticated) return;
+    router.push("/");
+  }, [authLoading, authenticated]);
+
+  useEffect(() => {
     ipcRenderer.on("signInResult", onResult);
+
     return () => {
       ipcRenderer.off("signInResult", onResult);
     };
@@ -19,6 +31,7 @@ export default function Auth() {
   function onResult(_, data: any) {
     setLoading(false);
     if (data.error) return setError(data.error);
+
     Firebase.authenticate(data)
       .then(() => setLoading(false))
       .catch(() => {
@@ -42,6 +55,7 @@ export default function Auth() {
       });
   }
 
+  if (authLoading) return <PageLoader />;
   return (
     <>
       <Head>

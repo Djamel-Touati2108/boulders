@@ -2,31 +2,22 @@ import Head from "next/head";
 import { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
+import { PageLoader } from "../components/Loader";
 import Add from "../components/pages/Add";
 import Current from "../components/pages/Current";
 import Done from "../components/pages/Done";
+import useAuth from "../hooks/useAuth";
+import useTaskSync from "../hooks/useTaskSync";
 
 const Swipeable = bindKeyboard(SwipeableViews);
 
-const styles = {
-  slide: {
-    height: "100vh",
-    color: "#fff",
-  },
-  slide1: {
-    background: "#FEA900",
-  },
-  slide2: {
-    background: "#B3DC4A",
-  },
-  slide3: {
-    background: "#6AC0FF",
-  },
-};
-
 export default function Home() {
+  const auth = useAuth();
+  const { loading } = useTaskSync(auth);
+
   const [index, setIndex] = useState(0);
 
+  if (loading) return <PageLoader />;
   return (
     <>
       <Head>
@@ -40,7 +31,7 @@ export default function Home() {
           className="w-screen"
         >
           <Add next={() => setIndex(1)} />
-          <Current />
+          <Current back={() => setIndex(0)} name={auth.user?.displayName} />
           <Done />
         </Swipeable>
         <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
