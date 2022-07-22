@@ -1,14 +1,15 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
+  "name": "boulders",
+  "description": "Boulders",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "author": "Paul Koeck <paul@koeck.dev>",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "build:icon": "electron-icon-builder --input=./assets/logo.png --output=./assets/ && cp ./assets/icons/png/48x48.png ./assets/icons/png/24x24@2.png"
   },
   "dependencies": {
     "@types/react-swipeable-views": "^0.13.1",
@@ -16,6 +17,7 @@
     "firebase": "^9.9.0",
     "framer-motion": "^6.5.1",
     "menubar": "^9.2.1",
+    "node-twitter-api": "^1.8.0",
     "react-swipeable-views": "^0.14.0"
   },
   "devDependencies": {
@@ -25,6 +27,7 @@
     "autoprefixer": "^10.4.7",
     "electron": "^18.2.0",
     "electron-builder": "^23.0.3",
+    "electron-icon-builder": "^2.0.1",
     "next": "^12.1.6",
     "nextron": "^8.1.0",
     "postcss": "^8.4.13",

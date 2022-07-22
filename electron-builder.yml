@@ -1,12 +1,22 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.trinitylabs.boulders
+productName: Boulders 
+copyright: Copyright © 2022 Trinity Labs
 directories:
   output: dist
-  buildResources: resources
+extraResources:
+  - from: ./assets/
+    to: assets
 files:
   - from: .
     filter:
       - package.json
       - app
 publish: null
+mac:
+  icon: ./assets/icons/mac/icon.icns
+win: 
+  icon: ./assets/icons/win/icon.ico
+linux:
+  icon: ./assets/icons/mac/icon.icns
+  target: 
+    - AppImage 
