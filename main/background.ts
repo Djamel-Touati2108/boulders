@@ -2,6 +2,8 @@ import { menubar } from "menubar";
 import serve from "electron-serve";
 import App from "./util/app";
 import Window from "./util/window";
+import Events from "./util/events";
+import Tray from "./util/tray";
 
 const mb = menubar({
   index: Window.path,
@@ -25,6 +27,10 @@ if (!App.isDev) {
 }
 
 mb.on("ready", () => {
+  Tray.update(mb.tray);
+  Events.listen();
+  Window.menubar = mb.window;
+
   if (App.isDev) Window.create();
 });
 

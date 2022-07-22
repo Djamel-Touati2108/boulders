@@ -3,6 +3,7 @@ import App from "./app";
 
 export default class Window {
   static win: BrowserWindow;
+  static menubar: BrowserWindow;
 
   static create() {
     this.win = new BrowserWindow({
