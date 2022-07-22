@@ -1,10 +1,10 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   Auth,
-  browserLocalPersistence,
   getAuth,
-  setPersistence,
   signInAnonymously,
+  signInWithCredential,
+  TwitterAuthProvider,
   User,
 } from "firebase/auth";
 import {
@@ -71,13 +71,25 @@ export default class Firebase {
     );
   }
 
-  static signIn() {
+  static authenticate(data: any) {
     return new Promise((res, rej) => {
-      setPersistence(this.auth, browserLocalPersistence)
-        .then(() => {
-          signInAnonymously(this.auth).then(res).catch(rej);
+      const credential = TwitterAuthProvider.credential(
+        data.accessToken,
+        data.accessTokenSecret
+      );
+
+      signInWithCredential(this.auth, credential)
+        .then((result) => {
+          console.log(result);
+          res(result);
         })
         .catch(rej);
+    });
+  }
+
+  static signInAnonymously() {
+    return new Promise((res, rej) => {
+      signInAnonymously(this.auth).then(res).catch(rej);
     });
   }
 }

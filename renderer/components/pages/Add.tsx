@@ -5,7 +5,7 @@ export default function Add({ next }: { next: () => void }) {
         <h1 className="text-[1.35rem] font-bold text-white">
           add boulders to queue 🗿{" "}
         </h1>
-        <p className="text-gray-400 text-[0.8rem]">
+        <p className="text-gray-400 text-[0.85rem]">
           click anywhere to add a new boulder.
         </p>
       </div>

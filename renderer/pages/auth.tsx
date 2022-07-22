@@ -1,14 +1,40 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import Firebase from "../util/firebase";
+import { ipcRenderer } from "electron";
+import Alert from "../components/Alert";
 
 export default function Auth() {
+  const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    ipcRenderer.on("signInResult", onResult);
+    return () => {
+      ipcRenderer.off("signInResult", onResult);
+    };
+  }, []);
+
+  function onResult(_, data: any) {
+    setLoading(false);
+    if (data.error) return setError(data.error);
+    Firebase.authenticate(data)
+      .then(() => setLoading(false))
+      .catch(() => {
+        setError("Something went wrong");
+        setLoading(false);
+      });
+  }
+
   function signIn() {
+    // setError(undefined);
+    // setLoading(true);
+    // ipcRenderer.send("signIn");
+
+    setError(undefined);
     setLoading(true);
-    Firebase.signIn()
+    Firebase.signInAnonymously()
       .then(() => setLoading(false))
       .catch((err) => {
         console.error(err);
@@ -33,9 +59,12 @@ export default function Auth() {
             to issue tracking.
           </p>
         </div>
-        <button onClick={signIn} className="w-full btn-primary h-12 py-0">
-          {loading ? <Loader white small /> : "continue with twitter"}
-        </button>
+        <div className="w-full flex flex-col space-y-4">
+          <Alert text={error} type="ERROR" />
+          <button onClick={signIn} className="w-full btn-primary h-12 py-0">
+            {loading ? <Loader white small /> : "continue with twitter"}
+          </button>
+        </div>
       </div>
     </>
   );
