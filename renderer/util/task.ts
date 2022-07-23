@@ -7,6 +7,10 @@ export const currentTaskAtom = atom((get) =>
   get(tasksAtom).find((task) => !isEmpty(task) && !task.completed)
 );
 
+export const openTasksAtom = atom((get) =>
+  get(tasksAtom).filter((task) => !task.completed)
+);
+
 export const doneTasksAtom = atom((get) =>
   get(tasksAtom).filter((task) => task.completed)
 );
@@ -25,6 +29,10 @@ export function emptyTask(): ITask {
     completed: false,
     createdAt: new Date(),
   };
+}
+
+export function hasEmpty(list: ITask[]) {
+  return Boolean(list.find(isEmpty));
 }
 
 export function isEmpty(task: ITask) {

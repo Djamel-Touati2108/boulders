@@ -1,14 +1,22 @@
 import Task from "../Task";
 import { useAtom } from "jotai";
-import { tasksAtom, emptyTask } from "../../util/task";
-import { useEffect } from "react";
+import { emptyTask, hasEmpty, openTasksAtom, tasksAtom } from "../../util/task";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { isEmpty } from "@firebase/util";
 
 interface IAddProps {
   next: () => void;
 }
 
 export default function Add({ next }: IAddProps) {
+  const [focusIndex, setFocusIndex] = useState(0);
   const [tasks, setTasks] = useAtom(tasksAtom);
+  const [open] = useAtom(openTasksAtom);
+
+  function focus() {
+    setFocusIndex((index) => index + 1);
+  }
 
   useEffect(() => {
     if (tasks.length) return;
@@ -17,6 +25,7 @@ export default function Add({ next }: IAddProps) {
 
   function onClick(e: any) {
     if (e.target !== e.currentTarget) return;
+    if (hasEmpty(tasks)) return focus();
     setTasks([emptyTask(), ...tasks]);
   }
 
@@ -37,9 +46,26 @@ export default function Add({ next }: IAddProps) {
         onClick={onClick}
         className="h-[100%] overflow-y-auto flex flex-col space-y-2 py-4"
       >
-        {tasks.map((task, index) => (
-          <Task {...task} key={task.id} input={true} />
-        ))}
+        <AnimatePresence>
+          {open.map((task, index) => (
+            <motion.div
+              key={task.id}
+              initial={{ scale: 1, marginBottom: "0.5rem" }}
+              exit={{ scale: 0, height: "0%", marginBottom: "0rem" }}
+              transition={{
+                duration: 0.2,
+                height: { delay: 0.2 },
+                marginBottom: { delay: 0.2 },
+              }}
+            >
+              <Task
+                {...task}
+                input={true}
+                focus={!task.text ? focusIndex : null}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
       <button onClick={next} className="btn-text">
         <p>done</p>
