@@ -17,7 +17,7 @@ export default function Done({ back }: IDoneProps) {
       </h1>
       <div className="w-full h-[100%] overflow-y-auto flex flex-col py-4">
         <AnimatePresence>
-          {done.map((task, index) => (
+          {done.map((task) => (
             <motion.div
               key={task.id}
               initial={{ scale: 1 }}
