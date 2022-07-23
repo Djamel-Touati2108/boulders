@@ -13,6 +13,7 @@ interface ITaskProps {
   single?: boolean;
   input?: boolean;
   focus?: null | number;
+  add?: () => void;
 }
 
 export default function Task({
@@ -22,6 +23,7 @@ export default function Task({
   single,
   input,
   focus,
+  add,
 }: ITaskProps) {
   const ref = useRef<HTMLTextAreaElement>();
   const timeout = useRef<NodeJS.Timeout>();
@@ -63,6 +65,15 @@ export default function Task({
     update(id, { completed: !completed });
   }
 
+  function onKeyDown(e: KeyboardEvent) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+
+    if (add && e.key == "Enter" && e.target.value.replace(/\s/g, "").length) {
+      add();
+    }
+  }
+
   return (
     <div className="w-full flex space-x-4">
       <button onClick={toggle} className="relative pt-[0.1rem]">
@@ -94,6 +105,7 @@ export default function Task({
           ref={ref}
           placeholder="add new task"
           value={text}
+          onKeyDown={onKeyDown}
           onChange={onChange}
           disabled={input !== true}
           className={`w-full text-white bg-transparent outline-none resize-none ${

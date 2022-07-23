@@ -25,7 +25,11 @@ export default function Add({ next }: IAddProps) {
 
   function onClick(e: any) {
     if (e.target !== e.currentTarget) return;
-    if (hasEmpty(tasks)) return focus();
+    add();
+  }
+
+  function add(force = false) {
+    if (!force && hasEmpty(tasks)) return focus();
     setTasks([emptyTask(), ...tasks]);
   }
 
@@ -62,6 +66,7 @@ export default function Add({ next }: IAddProps) {
                 {...task}
                 input={true}
                 focus={!task.text ? focusIndex : null}
+                add={() => add(true)}
               />
             </motion.div>
           ))}
