@@ -12,6 +12,7 @@ interface ITaskProps {
   completed: boolean;
   single?: boolean;
   input?: boolean;
+  focus?: null | number;
 }
 
 export default function Task({
@@ -20,6 +21,7 @@ export default function Task({
   text: parentText,
   single,
   input,
+  focus,
 }: ITaskProps) {
   const ref = useRef<HTMLTextAreaElement>();
   const timeout = useRef<NodeJS.Timeout>();
@@ -28,9 +30,9 @@ export default function Task({
   const [_, setTasks] = useAtom(tasksAtom);
 
   useEffect(() => {
-    if (parentText || !ref.current) return;
+    if (parentText || !ref.current || focus == null) return;
     ref.current.focus();
-  }, []);
+  }, [focus]);
 
   useEffect(() => {
     setText(parentText);
