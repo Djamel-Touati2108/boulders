@@ -131,17 +131,17 @@ export default class Firebase {
 
   static async fetch() {
     return new Promise<QueryDocumentSnapshot[]>(async (res) => {
-      const monday = new Date();
+      const sunday = new Date();
 
-      monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-      monday.setHours(0);
-      monday.setMinutes(0);
-      monday.setSeconds(0);
+      sunday.setDate(sunday.getDate() - sunday.getDay());
+      sunday.setHours(0);
+      sunday.setMinutes(0);
+      sunday.setSeconds(0);
 
       const tasksRef = collection(this.db, "users", this.user.uid, "tasks");
       const tasksQuery = query(
         tasksRef,
-        where("createdAt", ">", monday),
+        where("createdAt", ">", sunday),
         orderBy("createdAt", "desc")
       );
       const taskData = await getDocs(tasksQuery);
