@@ -10,10 +10,11 @@ export default function useAuth() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    Firebase.on("AUTH:CHANGE", onAuthChange);
+
     if (!Firebase.firebase) Firebase.init();
     else setLoading(false);
 
-    Firebase.on("AUTH:CHANGE", onAuthChange);
     return () => {
       Firebase.off("AUTH:CHANGE", onAuthChange);
     };

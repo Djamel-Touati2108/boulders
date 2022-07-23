@@ -22,6 +22,7 @@ import {
   QueryDocumentSnapshot,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { ITask, isEmpty } from "./task";
 
@@ -130,8 +131,21 @@ export default class Firebase {
 
   static async fetch() {
     return new Promise<QueryDocumentSnapshot[]>(async (res) => {
-      const tasksQuery = collection(this.db, "users", this.user.uid, "tasks");
+      const monday = new Date();
+
+      monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+      monday.setHours(0);
+      monday.setMinutes(0);
+      monday.setSeconds(0);
+
+      const tasksRef = collection(this.db, "users", this.user.uid, "tasks");
+      const tasksQuery = query(
+        tasksRef,
+        where("createdAt", ">", monday),
+        orderBy("createdAt", "desc")
+      );
       const taskData = await getDocs(tasksQuery);
+
       res(taskData.docs);
     });
   }

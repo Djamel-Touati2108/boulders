@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
 import { PageLoader } from "../components/Loader";
@@ -15,7 +15,15 @@ export default function Home() {
   const auth = useAuth();
   const { loading } = useTaskSync(auth);
 
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(
+    typeof window == "undefined"
+      ? 0
+      : Number(localStorage.getItem("activePage"))
+  );
+
+  useEffect(() => {
+    localStorage.setItem("activePage", String(index));
+  }, [index]);
 
   if (loading) return <PageLoader />;
   return (
@@ -31,8 +39,12 @@ export default function Home() {
           className="w-screen"
         >
           <Add next={() => setIndex(1)} />
-          <Current back={() => setIndex(0)} name={auth.user?.displayName} />
-          <Done />
+          <Current
+            active={index == 1}
+            back={() => setIndex(0)}
+            name={auth.user?.displayName}
+          />
+          <Done back={() => setIndex(1)} />
         </Swipeable>
         <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
           <Dot active={index == 0} onClick={() => setIndex(0)} />

@@ -30,6 +30,7 @@ export default function Auth() {
 
   function onResult(_, data: any) {
     setLoading(false);
+
     if (data.error) return setError(data.error);
 
     Firebase.authenticate(data)

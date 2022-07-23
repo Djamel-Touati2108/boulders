@@ -1,6 +1,6 @@
 import Task from "../Task";
 import { useAtom } from "jotai";
-import { tasksAtom, emptyTask, update } from "../../util/task";
+import { tasksAtom, emptyTask } from "../../util/task";
 import { useEffect } from "react";
 
 interface IAddProps {
@@ -38,7 +38,7 @@ export default function Add({ next }: IAddProps) {
         className="h-[100%] overflow-y-auto flex flex-col space-y-2 py-4"
       >
         {tasks.map((task, index) => (
-          <Task {...task} index={index} key={task.id} />
+          <Task {...task} key={task.id} input={true} />
         ))}
       </div>
       <button onClick={next} className="btn-text">
