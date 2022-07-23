@@ -20,8 +20,8 @@ export default function Done({ back }: IDoneProps) {
           {done.map((task, index) => (
             <motion.div
               key={task.id}
-              initial={{ scale: 1, marginBottom: "0.5rem" }}
-              exit={{ scale: 0, height: "0%", marginBottom: "0rem" }}
+              initial={{ scale: 1 }}
+              exit={{ scale: 0, height: "0%" }}
               transition={{
                 duration: 0.2,
                 height: { delay: 0.2 },
