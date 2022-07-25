@@ -77,7 +77,7 @@ export default function Auth() {
         <div className="w-full flex flex-col space-y-4">
           <Alert text={error} type="ERROR" />
           <button onClick={signIn} className="w-full btn-primary h-12 py-0">
-            {loading ? <Loader white small /> : "continue with twitter"}
+            {loading ? <Loader white small /> : "continue"}
           </button>
         </div>
       </div>
