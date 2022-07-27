@@ -27,14 +27,14 @@ import {
 import { ITask, isEmpty } from "./task";
 
 const config = {
-  apiKey: "AIzaSyD8BJoCIxxUM2T7vmwn2ZAkz1I5CIJJj_A",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "boulders-2f8f6.firebaseapp.com",
   databaseURL:
     "https://boulders-2f8f6-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "boulders-2f8f6",
+  projectId: process.env.FIREBASE_PROJECT_ID,
   storageBucket: "boulders-2f8f6.appspot.com",
-  messagingSenderId: "102002937120",
-  appId: "1:102002937120:web:3082758175d541b5de5b45",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
   measurementId: "G-X7CMTBWX9D",
 };
 
