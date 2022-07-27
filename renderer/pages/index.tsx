@@ -37,6 +37,7 @@ export default function Home() {
           onChangeIndex={setIndex}
           enableMouseEvents
           className="w-screen"
+          resistance={true}
         >
           <Add next={() => setIndex(1)} />
           <Current
