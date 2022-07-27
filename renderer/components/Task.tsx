@@ -68,7 +68,7 @@ export default function Task({
   function onKeyDown(e: KeyboardEvent) {
     if (e.key !== "Enter") return;
     e.preventDefault();
-
+    // @ts-ignore
     if (add && e.key == "Enter" && e.target.value.replace(/\s/g, "").length) {
       add();
     }
@@ -105,18 +105,17 @@ export default function Task({
           ref={ref}
           placeholder="add new task"
           value={text}
+          // @ts-ignore
           onKeyDown={onKeyDown}
           onChange={onChange}
           disabled={input !== true}
-          className={`w-full text-white bg-transparent outline-none resize-none ${
-            single ? "" : "border-b border-white/20 focus:border-white/20"
-          } py-2 rounded-none`}
+          className={`w-full text-white bg-transparent outline-none resize-none ${single ? "" : "border-b border-white/20 focus:border-white/20"
+            } py-2 rounded-none`}
         />
       ) : (
         <p
-          className={`w-full text-white ${
-            single ? "" : "border-b border-white/20 focus:border-white/20"
-          } py-2 cursor-pointer`}
+          className={`w-full text-white ${single ? "" : "border-b border-white/20 focus:border-white/20"
+            } py-2 cursor-pointer`}
           onClick={toggle}
         >
           {text}

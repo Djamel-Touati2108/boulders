@@ -66,7 +66,7 @@ export default function Current({ back, name, active }: ICurrentProps) {
               <Task
                 {...latest.current}
                 completed={completed}
-                index={0}
+
                 single
               />
             ) : (

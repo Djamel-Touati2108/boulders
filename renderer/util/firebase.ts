@@ -1,4 +1,5 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import {
   Auth,
   getAuth,
@@ -38,6 +39,8 @@ const config = {
   measurementId: "G-X7CMTBWX9D",
 };
 
+
+
 interface Listeners {
   "AUTH:CHANGE": (user: User) => void;
 }
@@ -55,9 +58,11 @@ export default class Firebase {
     this.firebase = initializeApp(config);
     this.auth = getAuth(this.firebase);
     this.db = getFirestore(this.firebase);
-
+    const analytics = getAnalytics(this.firebase);
     this.auth.onAuthStateChanged((user) => {
       this.call("AUTH:CHANGE", user);
+
+
     });
   }
 

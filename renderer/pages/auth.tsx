@@ -6,6 +6,7 @@ import { ipcRenderer } from "electron";
 import Alert from "../components/Alert";
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/router";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 export default function Auth() {
   const router = useRouter();
@@ -42,6 +43,10 @@ export default function Auth() {
   }
 
   function signIn() {
+
+
+    const analytics = getAnalytics();
+
     // setError(undefined);
     // setLoading(true);
     // ipcRenderer.send("signIn");
@@ -49,11 +54,13 @@ export default function Auth() {
     setError(undefined);
     setLoading(true);
     Firebase.signInAnonymously()
+      .then(() => logEvent(analytics, 'user signed in'))
       .then(() => setLoading(false))
       .catch((err) => {
         console.error(err);
         setLoading(false);
       });
+
   }
 
   if (authLoading) return <PageLoader />;
