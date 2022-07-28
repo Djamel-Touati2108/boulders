@@ -46,7 +46,7 @@ export default function Home() {
           />
           <Done back={() => setIndex(1)} />
         </Swipeable>
-        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
+        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex space-x-1">
           <Dot active={index == 0} onClick={() => setIndex(0)} />
           <Dot active={index == 1} onClick={() => setIndex(1)} />
           <Dot active={index == 2} onClick={() => setIndex(2)} />
@@ -60,10 +60,10 @@ function Dot({ active, onClick }) {
   return (
     <button
       style={{
-        width: `${active ? 1.5 : 0.75}rem`,
+        width: `${active ? 1 : 0.5}rem`,
         background: `rgb(255, 255, 255, ${active ? 0.5 : 0.2})`,
       }}
-      className="transition-all w-3 h-3 rounded-full cursor-pointer"
+      className="transition-all w-3 h-2 rounded-full cursor-pointer"
       onClick={onClick}
     ></button>
   );
