@@ -34,7 +34,12 @@ export default function Add({ next }: IAddProps) {
   }
 
   return (
-    <div onClick={onClick} className="layout">
+    <div
+      onClick={onClick} className="layout"
+
+
+    >
+
       <div
         onClick={onClick}
         className="w-full flex flex-col items-start space-y-1"
@@ -48,7 +53,7 @@ export default function Add({ next }: IAddProps) {
       </div>
       <div
         onClick={onClick}
-        className="h-[100%] overflow-y-auto flex flex-col py-4"
+        className="h-[100%] overflow-y-auto flex flex-col py-4 px-8 w-screen"
       >
         <AnimatePresence>
           {open.map((task, index) => (

@@ -105,6 +105,7 @@ export default function Task({
           ref={ref}
           placeholder="add new task"
           value={text}
+          maxLength={120}
           // @ts-ignore
           onKeyDown={onKeyDown}
           onChange={onChange}
