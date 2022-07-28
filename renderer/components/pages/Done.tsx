@@ -12,7 +12,7 @@ export default function Done({ back }: IDoneProps) {
 
   return (
     <div className="layout">
-      <h1 className="text-[1.35rem] font-bold text-white">
+      <h1 className="text-[1.35rem] font-semibold text-white">
         you moved {done.length} boulders this week 🎉
       </h1>
       <div className="w-full h-[100%] overflow-y-auto flex flex-col py-4">
