@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ITask, tasksAtom } from "../util/task";
 import { useAtom } from "jotai";
 import Firebase from "../util/firebase";
+import { Draggable } from "react-beautiful-dnd";
 
 interface ITaskProps {
   id: string;
@@ -65,7 +66,9 @@ export default function Task({
     update(id, { completed: !completed });
   }
 
+
   function onKeyDown(e: KeyboardEvent) {
+
     if (e.key !== "Enter") return;
     e.preventDefault();
     // @ts-ignore
@@ -75,7 +78,10 @@ export default function Task({
   }
 
   return (
-    <div className="w-full flex space-x-4">
+    //<Draggable draggableId={id}>
+    <div className="w-full flex space-x-4"
+      draggable={true}
+    >
       <button onClick={toggle} className="relative pt-[0.1rem]">
         <img
           style={{
@@ -123,5 +129,6 @@ export default function Task({
         </p>
       )}
     </div>
+    //</Draggable>
   );
 }
