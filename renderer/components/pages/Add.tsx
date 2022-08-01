@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { isEmpty } from "@firebase/util";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+
 interface IAddProps {
   next: () => void;
 }
@@ -34,37 +35,34 @@ export default function Add({ next }: IAddProps) {
     setTasks([emptyTask(), ...tasks]);
   }
 
-  ondragend = result => {
-    //TODO: reorder our column
-  }
-
   return (
-    <DragDropContext onDragEnd={ondragend}>
+    <div
+      onClick={onClick} className="layout">
       <div
-        onClick={onClick} className="layout">
-        <div
-          onClick={onClick}
-          className="w-full flex flex-col items-start space-y-1"
-        >
-          <h1 className="text-[1.35rem] font-semibold text-white">
-            add boulders to queue 🗿
-          </h1>
-          <p className="text-gray-400 text-[0.85rem]">
-            click anywhere to add a new boulder.
-          </p>
-        </div>
-        <div
-          onClick={onClick}
-          className="h-[100%] overflow-y-auto flex flex-col py-4 px-8 w-screen bg-white"
-        >
-          <Droppable droppableId={"add id"}>
-            {(provided) => (
-              <AnimatePresence
-                innerRef={provided.innerRef}
-                {...provided.droppableProps}
-              >
+        onClick={onClick}
+        className="w-full flex flex-col items-start space-y-1"
+      >
+        <h1 className="text-[1.35rem] font-semibold text-white">
+          add boulders to queue 🗿
+        </h1>
+        <p className="text-gray-400 text-[0.85rem]">
+          click anywhere to add a new boulder.
+        </p>
+      </div>
+      <div
+        onClick={onClick}
+        className="h-[100%] overflow-y-auto flex flex-col py-4 px-8 w-screen"
+      >
+        <Droppable droppableId={"id_add"}>
+          {provided => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <AnimatePresence>
                 {open.map((task, index) => (
                   <motion.div
+
                     key={task.id}
                     initial={{ scale: 1 }}
                     exit={{ scale: 0, height: "0%" }}
@@ -77,21 +75,23 @@ export default function Add({ next }: IAddProps) {
                   >
                     <Task
                       {...task}
-                      input={true}
+                      input={false}
+                      index={index}
                       focus={!task.text ? focusIndex : null}
                       add={() => add(true)}
                     />
                   </motion.div>
                 ))}
-                {provided.placeholder}
+
               </AnimatePresence>
-            )}
-          </Droppable>
-        </div>
-        <button onClick={next} className="btn-text">
-          <p>done</p>
-        </button>
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </div>
-    </DragDropContext>
+      <button onClick={next} className="btn-text">
+        <p>done</p>
+      </button>
+    </div>
   );
 }

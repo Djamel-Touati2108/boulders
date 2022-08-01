@@ -9,8 +9,8 @@ export default class Window {
     this.win = new BrowserWindow({
       width: 348,
       height: 483,
-      autoHideMenuBar: true,
-      transparent: true,
+      //autoHideMenuBar: true,      
+      //transparent: true,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
@@ -21,6 +21,7 @@ export default class Window {
 
     if (!App.isDev) return;
     this.win.blur();
+    this.win.webContents.openDevTools();
   }
 
   static get path() {

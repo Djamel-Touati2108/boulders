@@ -9,7 +9,11 @@ import Done from "../components/pages/Done";
 import useAuth from "../hooks/useAuth";
 import useTaskSync from "../hooks/useTaskSync";
 
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
 const Swipeable = bindKeyboard(SwipeableViews);
+
+
 
 export default function Home() {
   const auth = useAuth();
@@ -25,34 +29,45 @@ export default function Home() {
     localStorage.setItem("activePage", String(index));
   }, [index]);
 
+  function onDragEnd() {
+    //TODO
+  }
+
   if (loading) return <PageLoader />;
   return (
     <>
+
       <Head>
         <title>Boulders</title>
       </Head>
       <div className="relative w-screen h-screen flex flex-col justify-between items-center">
-        <Swipeable
-          index={index}
-          onChangeIndex={setIndex}
-          enableMouseEvents
-          className="w-screen"
-        >
-          <Add next={() => setIndex(1)} />
-          <Current
-            active={index == 1}
-            back={() => setIndex(0)}
-            name={auth.user?.displayName}
-          />
-          <Done back={() => setIndex(1)} />
-        </Swipeable>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Swipeable
+            index={index}
+            onChangeIndex={setIndex}
+            enableMouseEvents
+            className="w-screen"
+          >
+
+            <Add next={() => setIndex(1)} />
+            <Current
+              active={index == 1}
+              back={() => setIndex(0)}
+              name={auth.user?.displayName}
+            />
+            <Done back={() => setIndex(1)} />
+
+          </Swipeable>
+        </DragDropContext>
         <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex space-x-1">
           <Dot active={index == 0} onClick={() => setIndex(0)} />
           <Dot active={index == 1} onClick={() => setIndex(1)} />
           <Dot active={index == 2} onClick={() => setIndex(2)} />
         </div>
       </div>
+
     </>
+
   );
 }
 

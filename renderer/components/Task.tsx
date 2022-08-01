@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ITask, tasksAtom } from "../util/task";
 import { useAtom } from "jotai";
 import Firebase from "../util/firebase";
-import { Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
 
 interface ITaskProps {
   id: string;
@@ -15,6 +15,7 @@ interface ITaskProps {
   input?: boolean;
   focus?: null | number;
   add?: () => void;
+  index: number;
 }
 
 export default function Task({
@@ -25,6 +26,7 @@ export default function Task({
   input,
   focus,
   add,
+  index,
 }: ITaskProps) {
   const ref = useRef<HTMLTextAreaElement>();
   const timeout = useRef<NodeJS.Timeout>();
@@ -77,58 +79,65 @@ export default function Task({
     }
   }
 
+
+
   return (
-    //<Draggable draggableId={id}>
-    <div className="w-full flex space-x-4"
-      draggable={true}
-    >
-      <button onClick={toggle} className="relative pt-[0.1rem]">
-        <img
-          style={{
-            transform: `rotate(${rotate * 360}deg)`,
-          }}
-          src={`/images/task_${completed ? "complete" : "incomplete"}.png`}
-          alt={`Task`}
-          className="min-w-[1.7rem] select-none transition-all"
-          draggable={false}
-        />
-        <AnimatePresence>
-          {completed && (
-            <motion.div
-              initial={{ scale: 0, translateY: "-50%", translateX: "-50%" }}
-              animate={{ scale: 1, translateY: "-50%", translateX: "-50%" }}
-              exit={{ scale: 0, translateY: "-50%", translateX: "-50%" }}
-              transition={{ duration: 0.2 }}
-              className="absolute top-1/2 left-1/2 mt-[0.15rem]"
-            >
-              <CheckIcon className="text-white w-4" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </button>
-      {input ? (
-        <ReactTextareaAutosize
-          ref={ref}
-          placeholder="add new task"
-          value={text}
-          maxLength={120}
-          // @ts-ignore
-          onKeyDown={onKeyDown}
-          onChange={onChange}
-          disabled={input !== true}
-          className={`w-full text-white bg-transparent outline-none resize-none ${single ? "" : "border-b border-white/20 focus:border-white/20"
-            } py-2 rounded-none`}
-        />
-      ) : (
-        <p
-          className={`w-full text-white ${single ? "" : "border-b border-white/20 focus:border-white/20"
-            } py-2 cursor-pointer`}
-          onClick={toggle}
+    <Draggable draggableId={id} index={index}>
+      {provided => (
+        <div className="w-full flex space-x-4"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
-          {text}
-        </p>
+          <button onClick={toggle} className="relative pt-[0.1rem]">
+            <img
+              style={{
+                transform: `rotate(${rotate * 360}deg)`,
+              }}
+              src={`/images/task_${completed ? "complete" : "incomplete"}.png`}
+              alt={`Task`}
+              className="min-w-[1.7rem] select-none transition-all"
+              draggable={false}
+            />
+            <AnimatePresence>
+              {completed && (
+                <motion.div
+                  initial={{ scale: 0, translateY: "-50%", translateX: "-50%" }}
+                  animate={{ scale: 1, translateY: "-50%", translateX: "-50%" }}
+                  exit={{ scale: 0, translateY: "-50%", translateX: "-50%" }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-1/2 left-1/2 mt-[0.15rem]"
+                >
+                  <CheckIcon className="text-white w-4" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
+          {input ? (
+            <ReactTextareaAutosize
+              ref={ref}
+              placeholder="add new task"
+              value={text}
+              maxLength={120}
+              // @ts-ignore
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+              disabled={input !== true}
+              className={`w-full text-white bg-transparent outline-none resize-none ${single ? "" : "border-b border-white/20 focus:border-white/20"
+                } py-2 rounded-none`}
+            />
+          ) : (
+            <p
+              className={`w-full text-white ${single ? "" : "border-b border-white/20 focus:border-white/20"
+                } py-2 cursor-pointer`}
+              onClick={toggle}
+            >
+              {text}
+            </p>
+          )}
+        </div>
       )}
-    </div>
-    //</Draggable>
+    </Draggable>
+
   );
 }

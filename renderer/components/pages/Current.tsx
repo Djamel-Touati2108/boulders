@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { currentTaskAtom, ITask } from "../../util/task";
 import Task from "../Task";
 import { motion } from "framer-motion";
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 interface ICurrentProps {
   name?: string;
@@ -51,33 +52,44 @@ export default function Current({ back, name, active }: ICurrentProps) {
           good morning{name ? name.toLowerCase() : ""} ☀️
         </h1>
       </div>
-      <AnimatePresence>
-        {shown && (
-          <motion.div
-            initial={{ translateY: "-15vh", opacity: 0 }}
-            animate={{ translateY: "0vh", opacity: 1 }}
-            exit={{
-              translateY: "15vh",
-              opacity: 0,
-            }}
-            transition={{ duration: 0.2 }}
+      <Droppable droppableId={"id_current"}>
+        {provided => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
           >
-            {latest.current ? (
-              <Task
-                {...latest.current}
-                completed={completed}
+            <AnimatePresence>
+              {shown && (
+                <motion.div
+                  initial={{ translateY: "-15vh", opacity: 0 }}
+                  animate={{ translateY: "0vh", opacity: 1 }}
+                  exit={{
+                    translateY: "15vh",
+                    opacity: 0,
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {latest.current ? (
+                    <Task
+                      index={0}
+                      {...latest.current}
+                      completed={completed}
 
-                single
-              />
-            ) : (
-              <div className="w-full flex flex-col items-center space-y-3">
-                <h1 className="text-3xl text-white font-bold">all done.</h1>
-                <p className="text-gray-400">you have no open tasks left.</p>
-              </div>
-            )}
-          </motion.div>
+                      single
+                    />
+                  ) : (
+                    <div className="w-full flex flex-col items-center space-y-3">
+                      <h1 className="text-3xl text-white font-bold">all done.</h1>
+                      <p className="text-gray-400">you have no open tasks left.</p>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {provided.placeholder}
+          </div>
         )}
-      </AnimatePresence>
+      </Droppable>
       <button onClick={back} className="btn-text">
         <p>+ add new boulder</p>
       </button>
