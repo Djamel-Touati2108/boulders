@@ -23,8 +23,8 @@ export default function useAuth() {
   function onAuthChange() {
     setAuthenticated(Firebase.isAuthenticated);
     setUser(Firebase.user);
-    setLoading(false);
+    setLoading(false); 
   }
 
-  return { authenticated, loading, authLoading: loading, user };
+  return { authenticated: authenticated, loading, authLoading: loading, user };
 }

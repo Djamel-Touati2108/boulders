@@ -48,7 +48,7 @@ export default function Current({ back, name, active }: ICurrentProps) {
     <div className="layout">
       <div className="w-full flex flex-col items-center">
         <h1 className="text-[1.35rem] font-semibold text-white">
-          good morning{name ? name.toLowerCase() : ""} ☀️
+          good morning {name ? name.toLowerCase() : ""} ☀️
         </h1>
       </div>
       <AnimatePresence>

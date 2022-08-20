@@ -4,6 +4,9 @@ import { emptyTask, hasEmpty, openTasksAtom, tasksAtom } from "../../util/task";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { isEmpty } from "@firebase/util";
+import { getAnalytics, logEvent } from "firebase/analytics";
+import Firebase from "../../util/firebase";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface IAddProps {
   next: () => void;
@@ -31,6 +34,8 @@ export default function Add({ next }: IAddProps) {
   function add(force = false) {
     if (!force && hasEmpty(tasks)) return focus();
     setTasks([emptyTask(), ...tasks]);
+    const analytics = getAnalytics();
+    logEvent(analytics,'task_addition')
   }
 
   return (

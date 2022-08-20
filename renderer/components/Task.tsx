@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ITask, tasksAtom } from "../util/task";
 import { useAtom } from "jotai";
 import Firebase from "../util/firebase";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 interface ITaskProps {
   id: string;
@@ -59,6 +60,8 @@ export default function Task({
       Firebase.update({ ...tasks[index] });
       return [...tasks];
     });
+    const analytics = getAnalytics();
+    logEvent(analytics,'task_completed');
   }
 
   function toggle() {

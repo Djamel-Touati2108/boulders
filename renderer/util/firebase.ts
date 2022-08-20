@@ -1,10 +1,15 @@
-import { FirebaseApp, initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { FirebaseApp, initializeApp} from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   Auth,
+  AuthCredential,
   getAuth,
+  GoogleAuthProvider,
   signInAnonymously,
+  SignInMethod,
   signInWithCredential,
+  signInWithCustomToken,
+  signInWithPopup,
   TwitterAuthProvider,
   User,
 } from "firebase/auth";
@@ -49,6 +54,7 @@ export default class Firebase {
   static firebase: FirebaseApp;
   static db: Firestore;
   static auth: Auth;
+  static analytics : any;
 
   static listeners: {
     [key: string]: any;
@@ -58,7 +64,7 @@ export default class Firebase {
     this.firebase = initializeApp(config);
     this.auth = getAuth(this.firebase);
     this.db = getFirestore(this.firebase);
-    const analytics = getAnalytics(this.firebase);
+    this.analytics = getAnalytics(this.firebase);
     this.auth.onAuthStateChanged((user) => {
       this.call("AUTH:CHANGE", user);
 
@@ -106,11 +112,24 @@ export default class Firebase {
       signInWithCredential(this.auth, credential)
         .then((result) => {
           res(result);
+          logEvent(this.analytics,'twitter_account_creation');
         })
         .catch(rej);
     });
   }
 
+  static authenticateGoogle(data: any) {
+    return new Promise((res, rej) => {
+        const google = new GoogleAuthProvider();
+        signInWithPopup(this.auth, google).then(result => {
+          console.log(result)
+          logEvent(this.analytics,'google_account_creation');
+        }).catch((error)=>{ 
+          console.error(error)
+        })
+    });
+  }
+ 
   static signInAnonymously() {
     return new Promise((res, rej) => {
       signInAnonymously(this.auth)

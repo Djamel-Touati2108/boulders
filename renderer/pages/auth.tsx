@@ -7,14 +7,19 @@ import Alert from "../components/Alert";
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/router";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { datacatalog } from "googleapis/build/src/apis/datacatalog";
+import Home from ".";
+
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+
 
 export default function Auth() {
   const router = useRouter();
   const { authLoading, authenticated } = useAuth();
-
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
-
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
+ 
   useEffect(() => {
     if (authLoading) return;
     if (!authenticated) return;
@@ -42,27 +47,28 @@ export default function Auth() {
       });
   }
 
-  function signIn() {
+ 
+ 
+  function loginTwitter() {
 
-
-    const analytics = getAnalytics();
 
     // setError(undefined);
     // setLoading(true);
-    // ipcRenderer.send("signIn");
+    ipcRenderer.send("signIn");
 
     setError(undefined);
     setLoading(true);
-    Firebase.signInAnonymously()
-      .then(() => logEvent(analytics, 'user signed in'))
-      .then(() => setLoading(false))
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
 
   }
 
+  const loginGoogle = useGoogleLogin({
+    onSuccess: tokenResponse => Firebase.authenticateGoogle(tokenResponse),
+    onError:() => {
+      console.log('Login Failed')
+  }
+});
+ 
+ 
   if (authLoading) return <PageLoader />;
   return (
     <>
@@ -83,8 +89,11 @@ export default function Auth() {
         </div>
         <div className="w-full flex flex-col space-y-4">
           <Alert text={error} type="ERROR" />
-          <button onClick={signIn} className="w-full btn-primary h-12 py-0">
-            {loading ? <Loader white small /> : "continue"}
+          <button onClick={()=> loginGoogle()}  className="w-full btn-primary h-12 py-0">
+            {loadingGoogle ? <Loader white small /> : "continue with google"}
+          </button>
+          <button onClick={()=> loginTwitter()}  className="w-full btn-primary h-12 py-0">
+            {loading ? <Loader white small /> : "continue with twitter"}
           </button>
         </div>
       </div>
