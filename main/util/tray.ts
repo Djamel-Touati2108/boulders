@@ -14,7 +14,7 @@ export default class Tray {
       "assets",
       "icons",
       "png",
-      "48x48.png"
+      "16x16@2x.png"
     );
   }
 }
